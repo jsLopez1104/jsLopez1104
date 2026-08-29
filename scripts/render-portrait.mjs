@@ -54,11 +54,14 @@ export async function renderPortraitSvg(photoPath, outPath, { columns = 90 } = {
   const width = Math.ceil(columns * CHAR_W) + 4;
   const height = Math.ceil(rows * LINE_H) + 4;
 
+  // Reveal one row at a time (like a printer drawing it) instead of showing
+  // the whole portrait at once — each row fades in a beat after the last.
+  const ROW_DELAY = 0.045;
   const textLines = rowStrings
-    .map(
-      (row, i) =>
-        `<text x="2" y="${Math.round((i + 1) * LINE_H)}" xml:space="preserve">${escapeXml(row)}</text>`
-    )
+    .map((row, i) => {
+      const delay = (i * ROW_DELAY).toFixed(3);
+      return `<text x="2" y="${Math.round((i + 1) * LINE_H)}" xml:space="preserve" opacity="0">${escapeXml(row)}<animate attributeName="opacity" from="0" to="1" begin="${delay}s" dur="0.25s" fill="freeze" /></text>`;
+    })
     .join("\n");
 
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
