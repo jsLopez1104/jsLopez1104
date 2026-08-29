@@ -1,0 +1,12 @@
+{
+  "name": "jslopez1104-profile",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "generate": "node scripts/generate.mjs"
+  },
+  "dependencies": {
+    "jimp": "^1.6.0",
+    "subset-font": "^2.3.0"
+  }
+}
