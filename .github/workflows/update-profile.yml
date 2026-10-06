@@ -9,6 +9,7 @@ on:
     paths:
       - "scripts/**"
       - "assets/photo.jpg"
+      - "profile.config.mjs"
       - ".github/workflows/update-profile.yml"
 
 permissions:

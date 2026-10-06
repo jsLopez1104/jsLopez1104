@@ -39,3 +39,24 @@ export function fontFaceStyle(familyName, base64Woff2) {
   text, tspan { font-family: "${familyName}", monospace; }
 </style>`;
 }
+
+/**
+ * Regular + bold subsets for one graphic. Text uses the regular family by
+ * default; add class="b" for bold.
+ */
+export async function regularAndBoldStyle(prefix, text) {
+  const [regular, bold] = await Promise.all([
+    embedSubsetFont(text, "regular"),
+    embedSubsetFont(text, "bold"),
+  ]);
+  return `<style>
+  @font-face { font-family: "${prefix}R"; src: url(data:font/woff2;base64,${regular}) format("woff2"); }
+  @font-face { font-family: "${prefix}B"; src: url(data:font/woff2;base64,${bold}) format("woff2"); }
+  text, tspan { font-family: "${prefix}R", monospace; }
+  .b { font-family: "${prefix}B", monospace; font-weight: 700; }
+</style>`;
+}
+
+export function escapeXml(str) {
+  return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}

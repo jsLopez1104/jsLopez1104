@@ -1,5 +1,11 @@
 <p align="center">
-  <img src="assets/generated/portrait.svg" width="450" alt="" />
+  <img src="assets/generated/terminal.svg" width="860" alt="profile.sh: dot-matrix portrait of Juan Sebastián López next to a system-info panel — automation and self-hosted infra, Systems Engineering at UCO, Antioquia, Colombia. Stack: Python, TypeScript, React, n8n, Docker, Tailscale." />
+</p>
+
+<p align="center">
+  <a href="https://linkedin.com/in/juan-sebastian-lopez-valencia-4599b3424"><img src="assets/generated/badge-linkedin.svg" height="32" alt="LinkedIn" /></a>
+  &nbsp;
+  <a href="https://miportafoliocd.netlify.app"><img src="assets/generated/badge-portfolio.svg" height="32" alt="Portfolio" /></a>
 </p>
 
 <img src="assets/generated/heading-about.svg" alt="about" />
@@ -11,14 +17,13 @@ laptops as servers over a private mesh network, and
 I run container-isolated instead of trusting a shared-process framework with
 my own data.
 
-[portfolio](https://miportafoliocd.netlify.app) ·
-[linkedin](https://linkedin.com/in/juan-sebastian-lopez-valencia-4599b3424) ·
-email in profile
-
 <img src="assets/generated/heading-stack.svg" alt="stack" />
 
-python · typescript · javascript · react · c# · n8n · docker · tailscale ·
-postgresql · google sheets api
+<img src="assets/generated/stack.svg" width="580" alt="Python, TypeScript, JavaScript, React, C#/.NET, Node.js, n8n, Flask, Docker, Tailscale, Ubuntu, Nextcloud, PostgreSQL, Google Sheets, Firebase, Tailwind CSS, Vite, Netlify, Unity, Git" />
+
+<img src="assets/generated/heading-signals.svg" alt="signals" />
+
+<img src="assets/generated/signals.svg" width="860" alt="Self-assessed skill radar: Automation 85, Frontend 75, Infra 75, Applied AI 65, Backend 60, Game Dev 55. At a glance: 3 client projects shipped, 99 average Lighthouse score, 3 self-hosted servers, $0 monthly cloud bill." />
 
 <img src="assets/generated/heading-projects.svg" alt="projects" />
 
@@ -41,10 +46,8 @@ Replaced manual spreadsheets with a system that updates itself.
 a private mesh network of repurposed laptops running automation, personal
 cloud storage, and an AI assistant, with zero monthly cloud subscriptions.
 
-<img src="assets/generated/stats.svg" alt="stats" width="800" />
-
 <sub>Every graphic on this page is generated, not embedded from a third-party
-service — a scheduled GitHub Action pulls straight from the GitHub GraphQL
-API once a day and commits only what changed. Nothing here can rate-limit or
-go dark. Typeface is JetBrains Mono, subset per graphic and inlined as
-base64, because GitHub strips `<style>`/fonts from the README itself.</sub>
+service — a scheduled GitHub Action rebuilds them from `profile.config.mjs` and
+the GitHub GraphQL API once a day and commits only what changed. Icons from
+simple-icons, typeface JetBrains Mono subset per graphic and inlined as base64,
+because GitHub strips `<style>`/fonts from the README itself.</sub>

@@ -3,10 +3,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "generate": "node scripts/generate.mjs"
+    "generate": "node scripts/generate.mjs",
+    "preview": "node scripts/test-local.mjs"
   },
   "dependencies": {
     "jimp": "^1.6.0",
+    "simple-icons": "^16.34.0",
     "subset-font": "^2.3.0"
   }
 }

@@ -112,6 +112,7 @@ export async function fetchStats(token, login) {
   const languages = aggregateLanguages(user.repositories.nodes);
 
   return {
+    publicRepos: user.repositories.nodes.length,
     totalContributions: cal.totalContributions,
     days,
     currentStreak: streaks.current,
