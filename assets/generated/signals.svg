@@ -50,5 +50,5 @@
       <text x="671" y="233" font-size="10" fill="#8b949e">monthly cloud bill</text>
       <animate attributeName="opacity" to="1" begin="0.75s" dur="0.5s" fill="freeze"/>
     </g>
-  <text x="457" y="305" font-size="10" fill="#8b949e">synced 2026-10-08 · 3 public repos</text>
+  <text x="457" y="305" font-size="10" fill="#8b949e">synced 2026-10-09 · 3 public repos</text>
 </svg>
