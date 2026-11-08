@@ -148,7 +148,7 @@
       </g>
 <g clip-path="url(#r7)">
         <text x="380" y="239" fill="#8b949e">Core.Backend</text>
-        <text x="826" y="239" fill="#e6edf3" text-anchor="end">n8n · Node · Flask</text>
+        <text x="826" y="239" fill="#e6edf3" text-anchor="end">FastAPI · Flask · Node · n8n</text>
       </g>
 <g clip-path="url(#r8)">
         <text x="380" y="258" fill="#8b949e">Core.Data</text>
