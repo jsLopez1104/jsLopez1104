@@ -9,7 +9,7 @@ export const systemInfo = [
   ["Status", "Building NanoClaw + Segundo Cerebro"],
   ["Core.Lang", "Python · TypeScript · JS · C#"],
   ["Core.Frontend", "React · Tailwind · Vite"],
-  ["Core.Backend", "n8n · Node · Flask"],
+  ["Core.Backend", "FastAPI · Flask · Node · n8n"],
   ["Core.Data", "Sheets API · PostgreSQL · Firebase"],
   ["Core.Infra", "Docker · Tailscale · Ubuntu"],
   ["Core.GameDev", "Unity · MediaPipe"],

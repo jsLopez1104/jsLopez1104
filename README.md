@@ -27,6 +27,13 @@ my own data.
 
 <img src="assets/generated/heading-projects.svg" alt="projects" />
 
+**[InvoiceChaser](https://github.com/jsLopez1104/InvoiceChaser)** · fastapi,
+postgresql, react, wompi, resend — micro-SaaS that chases unpaid invoices:
+scheduled email reminders with a Wompi payment link, and a signature-verified
+webhook that marks the invoice paid and stops the reminders. Built for
+Colombia: debt-collection hours per Ley 2300, data-protection consent per
+Ley 1581.
+
 **[NanoClaw](https://github.com/jsLopez1104/nanoclaw)** · docker, node, claude
 agent sdk — self-hosted AI assistant, one Docker container per session for
 real OS-level isolation instead of a shared process. Picked it over the more
