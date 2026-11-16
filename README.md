@@ -25,7 +25,30 @@ my own data.
 
 <img src="assets/generated/signals.svg" width="860" alt="Self-assessed skill radar: Automation 85, Frontend 75, Infra 75, Applied AI 65, Backend 60, Game Dev 55. At a glance: 3 client projects shipped, 99 average Lighthouse score, 3 self-hosted servers, $0 monthly cloud bill." />
 
+<img src="assets/generated/heading-activity.svg" alt="activity" />
+
+<img src="assets/generated/activity.svg" width="860" alt="Contribution calendar for the last 12 months, drawn as a green grid, with current and longest streak." />
+
 <img src="assets/generated/heading-projects.svg" alt="projects" />
+
+**Capri** · fastapi, react, electron, ollama, whisper, kokoro, docker — my
+personal AI assistant, running entirely on three old laptops at home. A HUD
+panel on a dedicated screen, a desktop companion that walks on top of my
+windows (Windows and Hyprland), voice in and out with local models, and it
+"travels" between machines, carrying files with it. Every new project plugs
+into it: it quizzes me from my class notes, tracks job applications, runs
+pomodoros and writes to my journal — always asking yes/no before acting.
+
+**Estudio** · fastapi, sqlite, ollama, whisper, numpy — turns recorded
+lectures into study notes, answers questions only from my own documents
+(citing document and page) and quizzes me with my own material. Local
+embeddings, no paid APIs.
+
+**Partículas** · three.js, mediapipe, webgl — thousands of particles that form
+shapes and react to your hands through the webcam: open your hand to scatter
+them, hold a flower, butterfly or dragon between both hands. Runs fully in the
+browser; the video never leaves the device.
+
 
 **[InvoiceChaser](https://github.com/jsLopez1104/InvoiceChaser)** · fastapi,
 postgresql, react, wompi, resend — micro-SaaS that chases unpaid invoices:

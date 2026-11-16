@@ -6,8 +6,9 @@ import { renderStackSvg } from "../render-stack.mjs";
 import { renderSignalsSvg } from "../render-signals.mjs";
 import { renderBadgeSvg } from "../render-badge.mjs";
 import { renderHeadingSvg } from "../render-heading.mjs";
+import { renderActivitySvg } from "../render-activity.mjs";
 
-export const HEADINGS = ["about", "stack", "signals", "projects"];
+export const HEADINGS = ["about", "stack", "signals", "activity", "projects"];
 
 /** Renders every graphic from config + live stats. Shared by generate and test-local. */
 export async function renderAll(stats, { root = process.cwd(), login = "jsLopez1104" } = {}) {
@@ -20,6 +21,7 @@ export async function renderAll(stats, { root = process.cwd(), login = "jsLopez1
       photoPath: path.join(root, "assets", "photo.jpg"),
       crop: config.portrait.crop,
       tone: config.portrait.tone,
+      style: config.portrait.style,
       systemInfo: config.systemInfo,
       footer: config.footer,
       login,
@@ -37,6 +39,11 @@ export async function renderAll(stats, { root = process.cwd(), login = "jsLopez1
       syncedLine: `synced ${today} · ${stats.publicRepos} public repos`,
     },
     file("signals.svg")
+  );
+
+  await renderActivitySvg(
+    { days: stats.days ?? [], total: stats.totalContributions, currentStreak: stats.currentStreak ?? 0, longestStreak: stats.longestStreak ?? 0 },
+    file("activity.svg")
   );
 
   for (const badge of config.badges) await renderBadgeSvg(badge, file(`badge-${badge.id}.svg`));

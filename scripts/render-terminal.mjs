@@ -26,18 +26,18 @@ function luminance({ r, g, b }) {
  * lightest 5% is empty, whatever the exposure), and an elliptical vignette so
  * the wall and sweater at the edges fade out instead of competing with the face.
  */
-async function portraitDots(photoPath, crop, maxW, maxH, tone = "auto") {
+async function portraitDots(photoPath, crop, maxW, maxH, tone = "auto", pitchX = PITCH, pitchY = PITCH) {
   const image = await Jimp.read(photoPath);
   const cx = Math.round(image.width * crop.x);
   const cy = Math.round(image.height * crop.y);
   const cw = Math.round(image.width * crop.w);
   const ch = Math.round(image.height * crop.h);
-  const aspect = ch / cw;
+  const aspect = (ch / cw) * (pitchX / pitchY);   // rectangular cells (ASCII) need fewer rows than columns
 
-  let cols = Math.floor(maxW / PITCH);
+  let cols = Math.floor(maxW / pitchX);
   let rows = Math.round(cols * aspect);
-  if (rows * PITCH > maxH) {
-    rows = Math.floor(maxH / PITCH);
+  if (rows * pitchY > maxH) {
+    rows = Math.floor(maxH / pitchY);
     cols = Math.round(rows / aspect);
   }
 
@@ -85,12 +85,32 @@ function panel(x, w) {
   return `<rect x="${x}" y="${PANEL_Y}" width="${w}" height="${PANEL_H}" rx="${T.radius.md}" fill="${T.panelInset}" stroke="${T.border}" />`;
 }
 
-export async function renderTerminalSvg({ photoPath, crop, tone, systemInfo, footer, login }, outPath) {
+// ASCII mode: one character per cell, denser glyph = more ink. A monospace cell
+// is MONO em wide and ~1.15 em tall, so each cell covers PITCH_X × PITCH_Y px.
+const RAMP = " .:-=+*#%@";
+const ASCII_SIZE = 7.2;
+const PITCH_X = ASCII_SIZE * MONO;
+const PITCH_Y = ASCII_SIZE * 1.12;
+
+async function portraitAscii(photoPath, crop, maxW, maxH, tone) {
+  // Reuse the dot sampler at the ASCII cell size, then map each dot's ink to a glyph.
+  const { cols, rows, dots } = await portraitDots(photoPath, crop, maxW, maxH, tone, PITCH_X, PITCH_Y);
+  const grid = Array.from({ length: rows }, () => Array(cols).fill(" "));
+  for (const d of dots) {
+    const v = d.r / ((PITCH_X / 2) * 0.95);
+    grid[d.y][d.x] = RAMP[Math.max(1, Math.min(RAMP.length - 1, Math.round(v * (RAMP.length - 1))))];
+  }
+  return { cols, rows, lines: grid.map((row) => row.join("")), count: dots.length };
+}
+
+export async function renderTerminalSvg({ photoPath, crop, tone, style: estilo = "dots", systemInfo, footer, login }, outPath) {
   // ---- left: VISUAL.MAP -------------------------------------------------
   const area = { x: LEFT.x + 14, y: PANEL_Y + 34, w: LEFT.w - 28, h: PANEL_H - 66 };
-  const { cols, rows, dots } = await portraitDots(photoPath, crop, area.w - 16, area.h - 12, tone);
-  const ox = area.x + (area.w - cols * PITCH) / 2;
-  const oy = area.y + (area.h - rows * PITCH) / 2;
+  const ascii = estilo === "ascii" ? await portraitAscii(photoPath, crop, area.w - 16, area.h - 12, tone) : null;
+  const { cols, rows, dots } = ascii ? { cols: ascii.cols, rows: ascii.rows, dots: [] } : await portraitDots(photoPath, crop, area.w - 16, area.h - 12, tone);
+  const cellW = ascii ? PITCH_X : PITCH, cellH = ascii ? PITCH_Y : PITCH;
+  const ox = area.x + (area.w - cols * cellW) / 2;
+  const oy = area.y + (area.h - rows * cellH) / 2;
 
   // Reveal the portrait top-down, one dot row at a time.
   const byRow = new Map();
@@ -98,6 +118,10 @@ export async function renderTerminalSvg({ photoPath, crop, tone, systemInfo, foo
     if (!byRow.has(d.y)) byRow.set(d.y, []);
     byRow.get(d.y).push(d);
   }
+  // ASCII: one <text> line per row, revealed top-down like a terminal printing it
+  const asciiRows = ascii
+    ? ascii.lines.map((line, y) => line.trim() ? `<text x="${ox.toFixed(1)}" y="${(oy + (y + 1) * cellH - 1.5).toFixed(1)}" xml:space="preserve" opacity="0">${escapeXml(line)}<animate attributeName="opacity" to="1" begin="${(y * 0.045).toFixed(2)}s" dur="0.25s" fill="freeze"/></text>` : "").join("\n")
+    : "";
   const portrait = [...byRow.entries()]
     .map(([y, rowDots]) => {
       const circles = rowDots
@@ -111,8 +135,8 @@ export async function renderTerminalSvg({ photoPath, crop, tone, systemInfo, foo
     <animate attributeName="y" from="${area.y}" to="${area.y + area.h - 2}" dur="4s" begin="1.5s" repeatCount="indefinite"/>
   </rect>`;
 
-  const visualMeta = `${cols}×${rows} · DOTS`;
-  const visualFooter = `PTS ${dots.length} · PORTRAIT`;
+  const visualMeta = `${cols}×${rows} · ${ascii ? "ASCII" : "DOTS"}`;
+  const visualFooter = ascii ? `CHARS ${ascii.count} · PORTRAIT` : `PTS ${dots.length} · PORTRAIT`;
 
   // ---- right: SYSTEM.INFO -----------------------------------------------
   const rx = RIGHT.x + 18;
@@ -143,7 +167,7 @@ export async function renderTerminalSvg({ photoPath, crop, tone, systemInfo, foo
   const cursorX = rx + statusText.length * T.font.xs * MONO + 4;
 
   const allText = [
-    "profile.sh — live", "VISUAL.MAP", "SYSTEM.INFO", "LIVE", "●█",
+    "profile.sh — live", "VISUAL.MAP", "SYSTEM.INFO", "LIVE", "●█", RAMP,
     visualMeta, visualFooter, login, statusText, footer.location,
     ...systemInfo.flat(),
   ].join("");
@@ -163,7 +187,7 @@ export async function renderTerminalSvg({ photoPath, crop, tone, systemInfo, foo
   <text x="${LEFT.x + LEFT.w - 14}" y="${PANEL_Y + 22}" font-size="${T.font.xs}" fill="${T.muted}" text-anchor="end">${visualMeta}</text>
   ${cornerBrackets(area.x, area.y, area.w, area.h)}
   <g fill="${T.accentAlt}">
-  ${portrait}
+  ${ascii ? `<g font-size="${ASCII_SIZE}">${asciiRows}</g>` : portrait}
   </g>
   ${scan}
   <text x="${LEFT.x + 14}" y="${PANEL_Y + PANEL_H - 12}" font-size="${T.font.xs}" fill="${T.muted}">${visualFooter}</text>
