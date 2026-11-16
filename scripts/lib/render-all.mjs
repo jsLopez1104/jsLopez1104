@@ -7,6 +7,7 @@ import { renderSignalsSvg } from "../render-signals.mjs";
 import { renderBadgeSvg } from "../render-badge.mjs";
 import { renderHeadingSvg } from "../render-heading.mjs";
 import { renderActivitySvg } from "../render-activity.mjs";
+import { renderInvadersSvg } from "../render-invaders.mjs";
 
 export const HEADINGS = ["about", "stack", "signals", "activity", "projects"];
 
@@ -45,6 +46,7 @@ export async function renderAll(stats, { root = process.cwd(), login = "jsLopez1
     { days: stats.days ?? [], total: stats.totalContributions, currentStreak: stats.currentStreak ?? 0, longestStreak: stats.longestStreak ?? 0 },
     file("activity.svg")
   );
+  await renderInvadersSvg({ days: stats.days ?? [] }, file("invaders.svg"));
 
   for (const badge of config.badges) await renderBadgeSvg(badge, file(`badge-${badge.id}.svg`));
   for (const h of HEADINGS) await renderHeadingSvg(h, file(`heading-${h}.svg`));

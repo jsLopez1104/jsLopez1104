@@ -29,6 +29,8 @@ my own data.
 
 <img src="assets/generated/activity.svg" width="860" alt="Contribution calendar for the last 12 months, drawn as a green grid, with current and longest streak." />
 
+<img src="assets/generated/invaders.svg" width="860" alt="The same contribution grid as a Space Invaders game: a pixel ship sweeps under it and shoots each day that has commits." />
+
 <img src="assets/generated/heading-projects.svg" alt="projects" />
 
 **Capri** · fastapi, react, electron, ollama, whisper, kokoro, docker — my
